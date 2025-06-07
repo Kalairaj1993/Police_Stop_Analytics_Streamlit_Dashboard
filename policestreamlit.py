@@ -17,8 +17,18 @@ def run_query(query, params=None):
 st.set_page_config(layout="wide")
 
 st.markdown("""
-<h1 style='color: #FF4B4B; text-align: center;'>🛑 Traffic Police Dashboard 🚓</h1>
+<h1 style='color: #B22222; text-align: center; font-size: 70px; font-family: Verdana, Geneva, sans-serif; font-weight: 700;'>
+🛑 Traffic Police Dashboard 🚓
+</h1>
 """, unsafe_allow_html=True)
+
+col1, col2, col3 = st.columns(3, gap="small")
+with col1:
+    st.image("C:/Users/KALAIRAJ/Downloads/traffic.png", use_container_width=True)
+with col2:
+    st.image("C:/Users/KALAIRAJ/Downloads/traffic1.png", use_container_width=True)
+with col3:
+    st.image("C:/Users/KALAIRAJ/Downloads/traffic2.png", use_container_width=True)
 
 # Sidebar menu
 menu = st.sidebar.selectbox("👇 Select to View", [
@@ -470,9 +480,3 @@ if st.button("Run Analysis"):
             st.warning("No results found.")
     except Exception as e:
         st.error(f"Query Error: {e}")
-
-
-
-
-
-
