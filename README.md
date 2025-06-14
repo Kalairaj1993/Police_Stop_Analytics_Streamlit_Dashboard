@@ -22,7 +22,7 @@ It features:
 ## 3. Key Performance Indicators (Enforcement Overview) ##
 A dedicated "Enforcement Overview" section at the top of the dashboard provides crucial scalar metrics, offering an immediate snapshot of enforcement activities:
 
-'Total Police Stops': 
+Total Police Stops: 
   Displays the grand total of all recorded police stops.
   
 Total Arrests: 
