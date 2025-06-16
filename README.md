@@ -229,9 +229,14 @@ Police check posts require a centralized system for logging, tracking, and analy
 ### 🔗 Development Tools & Environment
 
 - **IDE**: Visual Studio Code  
-- **Database**: PostgreSQL hosted via Visual Studio  
+- **Database**: PostgreSQL (hosted on Render.com)  
 - **Language**: Python  
-- **Libraries**: `pandas`, `psycopg2-binary`, `plotly`, `streamlit`  
-- **Visualization**: Real-time dashboard using `plotly.express` in Streamlit  
-- **Hosting**: PostgreSQL instance managed and connected through Render or Visual Studio
+- **Libraries**:  
+  - `pandas` for data manipulation  
+  - `psycopg2-binary` for PostgreSQL connectivity  
+  - `plotly` for interactive charts  
+  - `streamlit` for dashboard UI  
+- **Visualization**: Real-time interactive dashboard using `plotly.express` embedded in Streamlit  
+- **Hosting**: PostgreSQL instance managed via Render.com and connected from local VS Code environment
+
 
