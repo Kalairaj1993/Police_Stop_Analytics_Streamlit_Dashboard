@@ -186,4 +186,11 @@ Police check posts require a centralized system for logging, tracking, and analy
 ---
 
 ## 📁 Project Structure
-
+police_stops/
+├── .venv/                         # Python virtual environment
+├── data/                          # Optional: For raw data files if you have any local CSVs
+│   └── raw_police_stops.csv
+├── police.py                      # Python database connector and data ingestion script
+├── streamlit_app.py               # Your Streamlit dashboard application
+├── requirements.txt               # Lists all Python dependencies
+└── README.md                      # Project README file (optional but recommended)
