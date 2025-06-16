@@ -188,11 +188,12 @@ Police check posts require a centralized system for logging, tracking, and analy
 
 | Path                     | Description                                                                 |
 |--------------------------|-----------------------------------------------------------------------------|
-| ├──`.venv/`                 | Python virtual environment (visual studio)             |
-| ├──`data/`                  | Folder for raw data files (e.g., CSVs)                                      |
-| │   └── `raw_police_stops.csv` | Sample raw dataset file                                                    |
-| ├──`police.py`              | Python script to connect to **PostgreSQL (hosted via Visual Studio)** and ingest data |
-| ├──`streamlit_app.py`       | Main **Streamlit dashboard application**                                     |
-| ├──`requirements.txt`       | List of Python dependencies required for the project                        |
-| ├──`README.md`              | Project documentation (overview, setup, features, etc.)                     |
-| └──*(Visual Studio)*        | Used as the IDE and to host PostgreSQL database                             |
+| `police_stops/`                            |
+|  ├──*(Visual Studio)*           | Used as the IDE and to host PostgreSQL database                      |
+|  ├──`.venv/`                    | Python virtual environment (visual studio)                            |
+|  ├──`data/`                     | Folder for raw data files (e.g., CSVs)                                      |
+|  │   └── `raw_police_stops.csv` | Sample raw dataset file                                                    |
+|  ├──`police.py`                 | Python script to connect to **PostgreSQL (hosted via Visual Studio)** and ingest data |
+|  ├──`streamlit_app.py`          | Main **Streamlit dashboard application**                                     |
+|  ├──`requirements.txt`          | List of Python dependencies required for the project                        |
+|  └──`README.md`                 | Project documentation (overview, setup, features, etc.)                     |
