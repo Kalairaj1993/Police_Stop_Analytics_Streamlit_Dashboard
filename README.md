@@ -187,11 +187,11 @@ Police check posts require a centralized system for logging, tracking, and analy
 ## 🗂️ Project Structure – Police Stop Data Analytics Dashboard
 
 | File/Folder                | Purpose                                                                 |
-|---------------------------|-------------------------------------------------------------------------|
+|----------------------------------|-------------------------------------------------------------------------|
 | `police_stops/`           | Root directory of the project                                           |
 | ├── `.venv/`              | Python virtual environment (created using Visual Studio Code)           |
 | ├── `data/`               | Folder for local raw data files (e.g., CSVs)                            |
-| │   └── `raw_police_stops.csv` | Raw police stop data used for ingestion                           |
+| │     └── `raw_police_stops.csv` | Raw police stop data used for ingestion                           |
 | ├── `police.py`           | Python script to connect with PostgreSQL and ingest/query data          |
 | ├── `streamlit_app.py`    | Main Streamlit dashboard application with visualizations                |
 | ├── `requirements.txt`    | Python dependencies (e.g., pandas, psycopg2-binary, plotly, streamlit) |
