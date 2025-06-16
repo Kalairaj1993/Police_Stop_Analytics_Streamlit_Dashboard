@@ -186,7 +186,8 @@ Police check posts require a centralized system for logging, tracking, and analy
 ---
 
 ## 📁 Project Structure
-police_stops/
+
+| police_stops/                                                                                |
 | ├── .venv/                         # Python virtual environment                              |  
 | ├── data/                          # For raw data files in my local CSVs                     |
 | │   └── raw_police_stops.csv                                                                 |
@@ -195,3 +196,4 @@ police_stops/
 | ├── requirements.txt               # Lists all Python dependencies                           |
 | └── README.md                      # Project README file                                     |
 
+---
