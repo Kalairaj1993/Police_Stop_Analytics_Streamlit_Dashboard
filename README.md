@@ -184,16 +184,25 @@ Police check posts require a centralized system for logging, tracking, and analy
 - **IDE**: Visual Studio Code
 
 ---
-## 📁 Project Structure: `police_stops/`
+## 🗂️ Project Structure – Police Stop Data Analytics Dashboard
 
-| Path                     | Description                                                                 |
-|--------------------------|-----------------------------------------------------------------------------|
-| `police_stops/`                            |
-|  ├──*(Visual Studio)*           | Used as the IDE and to host PostgreSQL database                      |
-|  ├──`.venv/`                    | Python virtual environment (visual studio)                            |
-|  ├──`data/`                     | Folder for raw data files (e.g., CSVs)                                      |
-|  │   └── `raw_police_stops.csv` | Sample raw dataset file                                                    |
-|  ├──`police.py`                 | Python script to connect to **PostgreSQL (hosted via Visual Studio)** and ingest data |
-|  ├──`streamlit_app.py`          | Main **Streamlit dashboard application**                                     |
-|  ├──`requirements.txt`          | List of Python dependencies required for the project                        |
-|  └──`README.md`                 | Project documentation (overview, setup, features, etc.)                     |
+| File/Folder                | Purpose                                                                 |
+|---------------------------|-------------------------------------------------------------------------|
+| `police_stops/`           | Root directory of the project                                           |
+| ├── `.venv/`              | Python virtual environment (created using Visual Studio Code)           |
+| ├── `data/`               | Folder for local raw data files (e.g., CSVs)                            |
+| │   └── `raw_police_stops.csv` | Raw police stop data used for ingestion                           |
+| ├── `police.py`           | Python script to connect with PostgreSQL and ingest/query data          |
+| ├── `streamlit_app.py`    | Main Streamlit dashboard application with visualizations                |
+| ├── `requirements.txt`    | Python dependencies (e.g., pandas, psycopg2-binary, plotly, streamlit) |
+| └── `README.md`           | Project documentation (this file)                                       |
+
+### 🔗 Development Tools & Environment
+
+- **IDE**: Visual Studio Code  
+- **Database**: PostgreSQL hosted via Visual Studio  
+- **Language**: Python  
+- **Libraries**: `pandas`, `psycopg2-binary`, `plotly`, `streamlit`  
+- **Visualization**: Real-time dashboard using `plotly.express` in Streamlit  
+- **Hosting**: PostgreSQL instance managed and connected through Render or Visual Studio
+
