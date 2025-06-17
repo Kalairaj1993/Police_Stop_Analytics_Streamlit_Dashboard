@@ -6,7 +6,7 @@ from sqlalchemy import create_engine, text
 
 # --- Database Connection Setup ---
 # PostgreSQL DB connection
-DATABASE_URL = "postgresql://rajuser:Miezb4Wu9cf3VZ30YCBedzlyYW1hzmFm@dpg-d0ka3bruibrs739bsct0-a.singapore-postgres.render.com/police"
+DATABASE_URL = "data base url"
 engine = create_engine(DATABASE_URL)
 
 # Function to run SQL queries
@@ -148,7 +148,7 @@ st.markdown("### 💡 <span style='color: #1E90FF;'>Traffic Intelligence</span>"
 selected_query = st.selectbox("Select a Query to Run", [
     "Total Number of Police Stops",
     "Count of Stops by Violation Type",
-    "Number of Arrests vs. Warnings",
+    "Number of Arrests vs Warnings",
     "Average Age of Drivers Stopped",
     "Top 5 Most Frequent Search Types",
     "Count of Stops by Gender",
@@ -158,7 +158,7 @@ selected_query = st.selectbox("Select a Query to Run", [
 query_map = {
     "Total Number of Police Stops": "SELECT COUNT(*) AS total_stops FROM police_stops",
     "Count of Stops by Violation Type": "SELECT violation, COUNT(*) AS count FROM police_stops GROUP BY violation ORDER BY count DESC",
-    "Number of Arrests vs. Warnings": "SELECT stop_outcome, COUNT(*) AS count FROM police_stops GROUP BY stop_outcome",
+    "Number of Arrests vs Warnings": "SELECT stop_outcome, COUNT(*) AS count FROM police_stops GROUP BY stop_outcome",
     "Average Age of Drivers Stopped": "SELECT AVG(driver_age) AS average_age FROM police_stops",
     "Top 5 Most Frequent Search Types": "SELECT search_type, COUNT(*) FROM police_stops WHERE search_type != '' GROUP BY search_type ORDER BY COUNT(*) DESC LIMIT 5",
     "Count of Stops by Gender": "SELECT driver_gender, COUNT(*) AS count FROM police_stops GROUP BY driver_gender",
@@ -245,12 +245,12 @@ query_map = {
     "Driver Age Group with Highest Arrest Rate": "SELECT CASE WHEN driver_age < 18 THEN '<18' WHEN driver_age BETWEEN 18 AND 25 THEN '18-25' WHEN driver_age BETWEEN 26 AND 40 THEN '26-40' WHEN driver_age BETWEEN 41 AND 60 THEN '41-60' ELSE '60+' END AS age_group, COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%')::float / COUNT(*) AS arrest_rate FROM police_stops GROUP BY age_group ORDER BY arrest_rate DESC;",
     "Gender Distribution by Country": "SELECT country_name, driver_gender, COUNT(*) AS total_stops FROM police_stops GROUP BY country_name, driver_gender ORDER BY country_name;",
     "Race + Gender with Highest Search Rate": "SELECT driver_race, driver_gender, COUNT(*) FILTER (WHERE search_conducted = TRUE)::float / COUNT(*) AS search_rate FROM police_stops GROUP BY driver_race, driver_gender ORDER BY search_rate DESC LIMIT 1;",
-    "Time of Day with Most Stops": "SELECT CASE WHEN EXTRACT(HOUR FROM stop_time)::int BETWEEN 0 AND 5 THEN 'Night (12AM-6AM)' WHEN EXTRACT(HOUR FROM stop_time)::int BETWEEN 6 AND 11 THEN 'Morning (6AM-12PM)' WHEN EXTRACT(HOUR FROM stop_time)::int BETWEEN 12 AND 17 THEN 'Afternoon (12PM-6PM)' ELSE 'Evening (6PM-12AM)' END AS time_of_day, COUNT(*) AS stop_count FROM police_stops GROUP BY time_of_day ORDER BY stop_count DESC;",
+    "Time of Day with Most Stops": "SELECT CASE WHEN EXTRACT(HOUR FROM stop_time::time) BETWEEN 0 AND 5 THEN 'Night (12AM-6AM)' WHEN EXTRACT(HOUR FROM stop_time::time) BETWEEN 6 AND 11 THEN 'Morning (6AM-12PM)' WHEN EXTRACT(HOUR FROM stop_time::time) BETWEEN 12 AND 17 THEN 'Afternoon (12PM-6PM)' ELSE 'Evening (6PM-12AM)' END AS time_of_day, COUNT(*) AS stop_count FROM police_stops GROUP BY time_of_day ORDER BY stop_count DESC;",
     "Average Stop Duration by Violation": "SELECT violation, AVG(CASE WHEN stop_duration ILIKE '%0-15%' THEN 7.5 WHEN stop_duration ILIKE '%16-30%' THEN 23 WHEN stop_duration ILIKE '%30+%' THEN 45 ELSE NULL END) AS avg_duration_minutes FROM police_stops GROUP BY violation ORDER BY avg_duration_minutes DESC;",
-    "Are Night Stops More Likely to be Arrests?": "SELECT CASE WHEN EXTRACT(HOUR FROM stop_time)::int BETWEEN 0 AND 5 THEN 'Night' ELSE 'Day' END AS period, COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%')::float / COUNT(*) AS arrest_rate FROM police_stops GROUP BY period;",
-    "Violations Linked with Search or Arrest": "SELECT violation, COUNT(*) FILTER (WHERE search_conducted = TRUE OR stop_outcome ILIKE '%arrest%') AS related_events, COUNT(*) AS total_stops, ROUND(COUNT(*) FILTER (WHERE search_conducted = TRUE OR stop_outcome ILIKE '%arrest%')::float / COUNT(*) * 100, 2) AS rate_percent FROM police_stops GROUP BY violation ORDER BY rate_percent DESC;",
+    "Are Night Stops More Likely to be Arrests?": "SELECT CASE WHEN EXTRACT(HOUR FROM stop_time::time) BETWEEN 0 AND 5 THEN 'Night' ELSE 'Day' END AS period, COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%')::float / COUNT(*) AS arrest_rate FROM police_stops GROUP BY period;",
+    "Violations Linked with Search or Arrest": "SELECT violation, COUNT(*) FILTER (WHERE search_conducted = TRUE OR stop_outcome ILIKE '%arrest%') AS related_events, COUNT(*) AS total_stops, ROUND((COUNT(*) FILTER (WHERE search_conducted = TRUE OR stop_outcome ILIKE '%arrest%')::numeric / COUNT(*)::numeric) * 100, 2) AS rate_percent FROM police_stops GROUP BY violation ORDER BY rate_percent DESC;",
     "Violations Common Among <25": "SELECT violation, COUNT(*) AS total FROM police_stops WHERE driver_age < 25 GROUP BY violation ORDER BY total DESC;",
-    "Violations Rarely Leading to Search or Arrest": "SELECT violation, COUNT(*) FILTER (WHERE search_conducted = TRUE OR stop_outcome ILIKE '%arrest%') AS related_events, COUNT(*) AS total_stops, ROUND(COUNT(*) FILTER (WHERE search_conducted = TRUE OR stop_outcome ILIKE '%arrest%')::float / COUNT(*) * 100, 2) AS rate_percent FROM police_stops GROUP BY violation HAVING COUNT(*) > 5 ORDER BY rate_percent ASC LIMIT 5;",
+    "Violations Rarely Leading to Search or Arrest": "SELECT violation, COUNT(*) FILTER (WHERE search_conducted = TRUE OR stop_outcome ILIKE '%arrest%') AS related_events, COUNT(*) AS total_stops, ROUND((COUNT(*) FILTER (WHERE search_conducted = TRUE OR stop_outcome ILIKE '%arrest%')::numeric / COUNT(*)::numeric) * 100, 2) AS rate_percent FROM police_stops GROUP BY violation HAVING COUNT(*) > 5 ORDER BY rate_percent ASC LIMIT 5;",
     "Countries with Highest Drug Stop Rate": "SELECT country_name, COUNT(*) FILTER (WHERE drugs_related_stop = TRUE)::float / COUNT(*) AS drug_rate FROM police_stops GROUP BY country_name ORDER BY drug_rate DESC;",
     "Arrest Rate by Country & Violation": "SELECT country_name, violation, COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%')::float / COUNT(*) AS arrest_rate FROM police_stops GROUP BY country_name, violation ORDER BY arrest_rate DESC;",
     "Country with Most Searches Conducted": "SELECT country_name, COUNT(*) AS search_count FROM police_stops WHERE search_conducted = TRUE GROUP BY country_name ORDER BY search_count DESC LIMIT 1;"
@@ -275,9 +275,9 @@ selected_query = st.selectbox("Select Analysis", [
 ])
 
 query_map = {
-    "Yearly Breakdown of Stops and Arrests by Country": "SELECT country_name, EXTRACT(YEAR FROM stop_date) AS year, COUNT(*) AS total_stops, COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%') AS total_arrests, ROUND(100.0 * COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%') / COUNT(*), 2) AS arrest_rate_percent, RANK() OVER (PARTITION BY EXTRACT(YEAR FROM stop_date) ORDER BY COUNT(*) DESC) AS country_rank FROM police_stops GROUP BY country_name, year ORDER BY year, country_rank;",
+    "Yearly Breakdown of Stops and Arrests by Country": "SELECT country_name, EXTRACT(YEAR FROM stop_date::DATE) AS year, COUNT(*) AS total_stops, COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%') AS total_arrests, ROUND(100.0 * COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%') / COUNT(*), 2) AS arrest_rate_percent, RANK() OVER (PARTITION BY EXTRACT(YEAR FROM stop_date::DATE) ORDER BY COUNT(*) DESC) AS country_rank FROM police_stops WHERE stop_date IS NOT NULL GROUP BY country_name, year ORDER BY year, country_rank;",
     "Driver Violation Trends Based on Age and Race": "SELECT v.driver_age, v.driver_race, v.violation, COUNT(*) AS count FROM (SELECT driver_age, driver_race, violation FROM police_stops WHERE driver_age IS NOT NULL AND driver_race IS NOT NULL) v GROUP BY v.driver_age, v.driver_race, v.violation ORDER BY count DESC LIMIT 100;",
-    "Time Period Analysis of Stops": "SELECT EXTRACT(YEAR FROM stop_date) AS year, TO_CHAR(stop_date, 'Month') AS month, DATE_PART('hour', stop_time) AS hour, COUNT(*) AS stop_count FROM police_stops GROUP BY year, month, hour ORDER BY year, month, hour;",
+    "Time Period Analysis of Stops": "SELECT EXTRACT(YEAR FROM stop_date::date) AS year, TO_CHAR(stop_date::date, 'Month') AS month, DATE_PART('hour', stop_time::time) AS hour, COUNT(*) AS stop_count FROM police_stops GROUP BY year, month, hour ORDER BY year, month, hour;",
     "Violations with High Search and Arrest Rates": "SELECT violation, COUNT(*) AS total_stops, COUNT(*) FILTER (WHERE search_conducted = TRUE) AS total_searches, COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%') AS total_arrests, ROUND(100.0 * COUNT(*) FILTER (WHERE search_conducted = TRUE) / COUNT(*), 2) AS search_rate, ROUND(100.0 * COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%') / COUNT(*), 2) AS arrest_rate, RANK() OVER (ORDER BY COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%') DESC) AS arrest_rank FROM police_stops GROUP BY violation ORDER BY arrest_rate DESC LIMIT 10;",   
     "Driver Demographics by Country": "SELECT country_name, driver_gender, driver_race, ROUND(AVG(driver_age), 1) AS avg_age, COUNT(*) AS driver_count FROM police_stops WHERE driver_age IS NOT NULL GROUP BY country_name, driver_gender, driver_race ORDER BY country_name, driver_count DESC;",    
     "Top 5 Violations with Highest Arrest Rates": "SELECT violation, COUNT(*) AS total_stops, COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%') AS arrest_count, ROUND(100.0 * COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%') / COUNT(*), 2) AS arrest_rate FROM police_stops GROUP BY violation HAVING COUNT(*) > 10 ORDER BY arrest_rate DESC LIMIT 5;"
