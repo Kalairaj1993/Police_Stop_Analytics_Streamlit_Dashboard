@@ -238,6 +238,7 @@ Police check posts require a centralized system for logging, tracking, and analy
   - `streamlit` for dashboard UI
 
 - **Visualization**: Real-time interactive dashboard using `plotly.express` embedded in Streamlit
+-  **Hosting**: PostgreSQL instance managed via Render.com and connected from local VS Code environment
 
 # Streamlit App Architecture Overview
 #
@@ -272,6 +273,6 @@ Police check posts require a centralized system for logging, tracking, and analy
 # +--------------------------+
 # | Results Displayed on UI  |
 # +--------------------------+
-- **Hosting**: PostgreSQL instance managed via Render.com and connected from local VS Code environment
+
 
 
