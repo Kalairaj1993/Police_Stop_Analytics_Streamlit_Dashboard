@@ -1,3 +1,4 @@
+# --- Importing Libraries ---
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -6,7 +7,7 @@ from sqlalchemy import create_engine, text
 
 # --- Database Connection Setup ---
 # PostgreSQL DB connection
-DATABASE_URL = "data base url"
+DATABASE_URL = "postgresql://rajuser:z3sEKFqYIAVVm65axXI5h1KGjMbEcznL@dpg-d18c1podl3ps73bun9k0-a.singapore-postgres.render.com/policestops"
 engine = create_engine(DATABASE_URL)
 
 # Function to run SQL queries
@@ -98,7 +99,7 @@ if menu == "Analytics & Trends":
     LIMIT 100
     """
     data = run_query(query_for_tabs)
-    with tab1:
+    with tab1:                               #Tab 1: Stops by Violation
         if not data.empty and 'violation' in data.columns:
             violation_data = data['violation'].value_counts().reset_index()
             fig = px.bar(violation_data, x='violation', y='count', title='Stop by Violation Type', color='violation')
@@ -106,7 +107,7 @@ if menu == "Analytics & Trends":
         else:
             st.warning("No data available for violation chart.")
 
-    with tab2:
+    with tab2:                               #Tab 2: Driver Gender Distribution
         if not data.empty and 'driver_gender' in data.columns:
             gender_data = data['driver_gender'].value_counts().reset_index()
             gender_data.columns = ['Gender', 'Count']
@@ -196,9 +197,8 @@ with st.form("new_log"):
     submit = st.form_submit_button("Predict Stop Outcome & Violation")
 
     if submit:
-        # Placeholder for predicted results from ML model
-        predicted_violation = "Speeding"  # Replace with model.predict(...)
-        predicted_outcome = "Citation"    # Replace with model.predict(...)
+        predicted_violation = "Speeding"  
+        predicted_outcome = "Citation"    
 
         # Convert to boolean-like values
         search_conducted = 1 if search == "Yes" else 0
@@ -256,7 +256,7 @@ query_map = {
     "Country with Most Searches Conducted": "SELECT country_name, COUNT(*) AS search_count FROM police_stops WHERE search_conducted = TRUE GROUP BY country_name ORDER BY search_count DESC LIMIT 1;"
 }
 
-if st.button("Run Query"): # This button applies to the current selectbox
+if st.button("Run Query"): 
     result = run_query(query_map[selected_query])
     if not result.empty:
         st.dataframe(result)
@@ -283,9 +283,60 @@ query_map = {
     "Top 5 Violations with Highest Arrest Rates": "SELECT violation, COUNT(*) AS total_stops, COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%') AS arrest_count, ROUND(100.0 * COUNT(*) FILTER (WHERE stop_outcome ILIKE '%arrest%') / COUNT(*), 2) AS arrest_rate FROM police_stops GROUP BY violation HAVING COUNT(*) > 10 ORDER BY arrest_rate DESC LIMIT 5;"
 }
 
-if st.button("Run Analysis"): # This button applies to the current selectbox
+if st.button("Run Analysis"): 
     result = run_query(query_map[selected_query])
     if not result.empty:
         st.dataframe(result)
     else:
          st.warning("No results found.")
+
+
+
+# --- Overall Flow and Purpose: ---
+# 1. Setup: Connects to a PostgreSQL database and defines a utility function for running queries.
+# 2. Dashboard Layout: Configures the Streamlit page, adds a title, and displays header images.
+# 3. Navigation: Uses a sidebar selectbox to allow users to switch between different dashboard views.
+# 4. Vehicle Logs: Provides a searchable table of police stop records.
+# 5. Violations: Shows a table of the most common violation types.
+# 6. Analytics & Trends: Presents interactive charts (bar charts for violations and gender distribution) to visualize key trends.
+# 7. Enforcement Overview: Displays key performance indicators (KPIs) like total stops, arrests, warnings, and drug-related stops using metric cards.
+# 8. Traffic Intelligence (Simple Queries): Allows users to run predefined basic SQL queries to get quick insights.
+# 9. Add New Police Log & Predict: Offers a form for users to input new police stop details. Crucially, this section is set up to simulate a prediction, implying that an ML model would be integrated here to predict stop outcomes and violations based on the input data.
+# 10. Police Stop Query (Advanced Analysis): Provides a selection of more complex SQL queries for deeper, pre-defined analytical investigations (e.g., age group with highest arrest rate, time of day with most stops).
+# 11. Advanced Police Stop Analysis (More Complex Queries): Offers even more sophisticated analytical queries, often involving more complex SQL features, for in-depth data exploration.
+
+# This script demonstrates a comprehensive Streamlit dashboard for a traffic police department, enabling data exploration, quick insights, and a framework for integrating predictive analytics.
+
+# Streamlit App Architecture Overview
+#
+# +-------------------------+
+# |   Streamlit App Launch  |
+# +-------------------------+
+#             |
+#             v
+# +--------------------------+
+# | Connect to PostgreSQL DB |
+# +--------------------------+
+#             |
+#             v
+# +--------------------------+
+# |   Sidebar Menu Selection |
+# +--------------------------+
+#      |       |       |
+#      v       v       v
+# Vehicle  Violations Analytics
+#  Logs        & Trends
+#   |             |
+#   v             v
+# Search or   Charts & Metrics
+# Full View     via Plotly
+#   |             |
+#   v             v
+# +--------------------------+
+# |   SQL Queries Executed   |
+# +--------------------------+
+#             |
+#             v
+# +--------------------------+
+# | Results Displayed on UI  |
+# +--------------------------+
