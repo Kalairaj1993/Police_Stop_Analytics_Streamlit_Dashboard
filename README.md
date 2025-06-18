@@ -235,8 +235,43 @@ Police check posts require a centralized system for logging, tracking, and analy
   - `pandas` for data manipulation  
   - `psycopg2-binary` for PostgreSQL connectivity  
   - `plotly` for interactive charts  
-  - `streamlit` for dashboard UI  
-- **Visualization**: Real-time interactive dashboard using `plotly.express` embedded in Streamlit  
+  - `streamlit` for dashboard UI
+
+- **Visualization**: Real-time interactive dashboard using `plotly.express` embedded in Streamlit
+
+# Streamlit App Architecture Overview
+#
+# +-------------------------+
+# |   Streamlit App Launch  |
+# +-------------------------+
+#             |
+#             v
+# +--------------------------+
+# | Connect to PostgreSQL DB |
+# +--------------------------+
+#             |
+#             v
+# +--------------------------+
+# |   Sidebar Menu Selection |
+# +--------------------------+
+#      |       |       |
+#      v       v       v
+# Vehicle  Violations Analytics
+#  Logs        & Trends
+#   |             |
+#   v             v
+# Search or   Charts & Metrics
+# Full View     via Plotly
+#   |             |
+#   v             v
+# +--------------------------+
+# |   SQL Queries Executed   |
+# +--------------------------+
+#             |
+#             v
+# +--------------------------+
+# | Results Displayed on UI  |
+# +--------------------------+
 - **Hosting**: PostgreSQL instance managed via Render.com and connected from local VS Code environment
 
 
